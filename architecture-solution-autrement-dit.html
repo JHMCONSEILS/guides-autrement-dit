@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comment la solution est montée — Autrement Dit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCFBF8;--ink:#1B2430;--slate:#5C6470;
+    --coral:#E2553C;--coral-soft:#FBE7E0;--coral-line:#F0D2C8;
+    --highlight:#FBE6A0;--line:#E8E3D8;
+    --green:#2E8A66;--green-soft:#E6F1EB;--green-line:#CDE6D9;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.6;font-size:16px;
+  }
+  .sheet{max-width:800px;margin:0 auto;padding:64px 40px 80px;}
+
+  /* Header */
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);margin:0 0 18px;}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:clamp(30px,5.5vw,46px);line-height:1.08;letter-spacing:-.01em;margin:0 0 16px;}
+  .lede{font-size:18px;color:var(--slate);margin:0;max-width:58ch;}
+
+  /* Frame (labelled container = a zone of the structure) */
+  .frame{
+    position:relative;border:1.5px solid var(--line);border-radius:20px;
+    background:#fff;padding:34px 26px 26px;margin-top:40px;
+  }
+  .frame.account{border-color:var(--ink);border-width:2px;background:var(--paper);}
+  .frame-tag{
+    position:absolute;top:-12px;left:24px;background:var(--paper);
+    padding:3px 14px;font-size:11px;font-weight:600;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--slate);border-radius:999px;border:1px solid var(--line);
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .frame.account .frame-tag{color:var(--ink);border-color:var(--ink);}
+  .frame-tag .hex{width:9px;height:9px;background:var(--coral);border-radius:2px;transform:rotate(45deg);}
+
+  .zone-intro{font-size:14.5px;color:var(--slate);margin:0 0 18px;}
+
+  /* Grid of workspace cards inside the account */
+  .ws-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .ws{
+    border:1px solid var(--line);border-radius:14px;background:#fff;
+    padding:18px 18px 16px;
+  }
+  .ws .lab{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin:0 0 7px;}
+  .ws h3{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:18px;margin:0 0 6px;}
+  .ws p{margin:0;font-size:13px;color:var(--slate);}
+  .ws.tpl{border-style:dashed;background:transparent;}
+  .ws.admin{background:#fff;}
+
+  /* Stack: "un workspace par client" */
+  .stack-wrap{position:relative;padding:0 14px 12px 0;}
+  .stack{position:relative;}
+  .stack .ghost{
+    position:absolute;inset:0;border:1px solid var(--coral-line);
+    border-radius:16px;background:#fff;
+  }
+  .stack .ghost.g1{transform:translate(10px,10px);opacity:.45;}
+  .stack .ghost.g2{transform:translate(20px,20px);opacity:.25;}
+  .stack .front{
+    position:relative;border:1.5px solid var(--coral);border-radius:16px;
+    background:var(--coral-soft);padding:20px 22px;
+  }
+  .stack .front .lab{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);margin:0 0 7px;}
+  .stack .front h3{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:21px;margin:0 0 6px;}
+  .stack .front p{margin:0;font-size:14px;color:var(--ink);}
+  .stack-foot{font-size:12.5px;color:var(--slate);margin:18px 0 0;}
+
+  .hl{background:linear-gradient(transparent 58%,var(--highlight) 58%);padding:0 2px;font-weight:600;color:var(--ink);}
+
+  /* Chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 2px;}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;background:#fff;
+    border:1px solid var(--line);border-radius:9px;padding:7px 13px;
+    font-size:13.5px;font-weight:500;color:var(--ink);white-space:nowrap;
+  }
+  .chip.dash{border:1.5px solid var(--coral);background:#fff;font-weight:600;}
+  .chip .ico{font-size:12px;opacity:.5;}
+
+  .section-label{
+    font-size:13px;font-weight:600;color:var(--ink);margin:0 0 4px;
+  }
+  .section-note{font-size:13.5px;color:var(--slate);margin:0 0 14px;}
+
+  /* connector caption between frames */
+  .zoom{
+    display:flex;align-items:center;gap:10px;justify-content:center;
+    margin:18px 0 -8px;font-size:12px;font-weight:600;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--slate);
+  }
+  .zoom .ln{height:18px;width:2px;background:var(--line);border-radius:2px;}
+
+  /* Project anatomy */
+  .anatomy{margin-top:6px;}
+  .arow{
+    display:flex;align-items:center;gap:11px;
+    border:1px solid var(--line);border-radius:11px;background:#fff;
+    padding:13px 15px;
+  }
+  .arow .marker{color:var(--coral);font-size:13px;}
+  .arow .ttl{font-weight:600;font-size:15px;}
+  .arow .meaning{margin-left:auto;font-size:12.5px;color:var(--slate);}
+  .arow .meaning b{color:var(--coral);font-weight:600;}
+
+  .subs{
+    margin:10px 0 0 26px;border-left:3px solid var(--green-line);
+    padding:4px 0 4px 18px;
+  }
+  .subs .scap{
+    font-size:12px;color:var(--green);font-weight:600;margin:0 0 9px;
+    letter-spacing:.02em;
+  }
+  .srow{
+    display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:9px;
+    padding:9px 13px;margin-bottom:7px;font-size:13px;
+  }
+  .srow:last-child{margin-bottom:0;}
+  .srow .who{display:flex;align-items:center;gap:8px;font-weight:500;}
+  .srow .av{width:20px;height:20px;border-radius:50%;background:var(--coral);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+  .srow .chrono{display:inline-flex;align-items:center;gap:5px;color:var(--slate);}
+  .srow .hrs{font-weight:600;color:var(--ink);}
+  .srow .dot{width:0;height:0;border-left:7px solid var(--green);border-top:5px solid transparent;border-bottom:5px solid transparent;}
+
+  /* Central workspace folders */
+  .folder{margin-top:18px;}
+  .folder:first-of-type{margin-top:6px;}
+  .flab{
+    font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink);margin:0 0 9px;display:flex;align-items:center;gap:9px;
+  }
+  .flab::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--coral);flex-shrink:0;}
+  .chip .priv{
+    font-size:10px;font-weight:600;color:var(--slate);background:var(--paper);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;letter-spacing:.03em;
+  }
+  .chip .trig{
+    font-size:10px;font-weight:600;color:#fff;background:var(--coral);
+    border-radius:5px;padding:1px 6px;letter-spacing:.03em;
+  }
+  .chip.ghost{background:transparent;border-style:dashed;color:var(--slate);}
+
+  /* Make engine */
+  .frame.make{background:var(--green-soft);border-color:var(--green-line);}
+  .frame-tag.green{color:var(--green);border-color:var(--green-line);}
+  .frame-tag.green .hex{background:var(--green);}
+  .doing{margin:14px 0 12px;padding:0;list-style:none;}
+  .doing li{position:relative;padding-left:24px;margin-bottom:9px;font-size:14.5px;color:var(--ink);}
+  .doing li:last-child{margin-bottom:0;}
+  .doing li::before{content:"";position:absolute;left:2px;top:7px;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--green);}
+  .doing li b{font-weight:600;}
+  .pipe{
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+    margin:0 0 14px;font-size:13.5px;color:var(--ink);font-weight:500;
+  }
+  .pipe .nodebox{
+    background:#fff;border:1px solid var(--green-line);border-radius:9px;
+    padding:6px 12px;
+  }
+  .pipe .nodebox.mid{background:var(--green);border-color:var(--green);color:#fff;}
+  .pipe .ar{color:var(--green);font-size:15px;}
+
+  /* Footer */
+  .foot{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--slate);}
+  .foot .mark{font-family:"Fraunces",Georgia,serif;font-size:15px;color:var(--ink);font-weight:500;}
+
+  @media (prefers-reduced-motion: no-preference){
+    .frame{animation:rise .5s ease both;}
+    .frame:nth-of-type(2){animation-delay:.05s;}
+    .frame:nth-of-type(3){animation-delay:.1s;}
+    .frame:nth-of-type(4){animation-delay:.15s;}
+    @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  }
+  a{color:var(--coral);}
+  :focus-visible{outline:2px solid var(--coral);outline-offset:2px;border-radius:3px;}
+
+  @media (max-width:640px){
+    .sheet{padding:40px 20px 60px;}
+    .ws-grid{grid-template-columns:1fr;}
+    .arow{flex-wrap:wrap;}
+    .arow .meaning{margin-left:0;width:100%;}
+    .srow{grid-template-columns:1fr;gap:6px;}
+  }
+  @media print{
+    body{background:#fff;}
+    .sheet{max-width:none;padding:0 8mm;}
+    .frame{animation:none !important;break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <p class="eyebrow">Autrement Dit · Architecture</p>
+    <h1>Comment la solution est montée</h1>
+    <p class="lede">La carte de l'ensemble : le compte, ses workspaces, le principe d'un espace par client, la façon dont un projet est bâti — et le moteur Make qui assemble le tout en coulisses.</p>
+  </header>
+
+  <!-- CENTRAL WORKSPACE -->
+  <section class="frame account">
+    <span class="frame-tag"><span class="hex"></span> L'espace central · autrement-dit</span>
+    <p class="zone-intro">Le quartier général de l'agence. Organisé en trois dossiers :</p>
+
+    <div class="folder">
+      <p class="flab">Tableau de bord et reporting</p>
+      <div class="chips">
+        <span class="chip">Démarchage</span>
+        <span class="chip">Nouveaux Projets</span>
+      </div>
+    </div>
+
+    <div class="folder">
+      <p class="flab">RH</p>
+      <div class="chips">
+        <span class="chip">Taux et conditions <span class="priv">privé</span></span>
+        <span class="chip">RH · Capacité / Mois 2026 <span class="priv">privé</span></span>
+      </div>
+    </div>
+
+    <div class="folder">
+      <p class="flab">Admin &amp; suivi</p>
+      <div class="chips">
+        <span class="chip">Vue d'ensemble · Agrégation de temps <span class="priv">privé</span></span>
+        <span class="chip">Vue d'ensemble · Facturation <span class="priv">privé</span></span>
+        <span class="chip">Paie interne</span>
+        <span class="chip">Administration</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODELES -->
+  <section class="frame">
+    <span class="frame-tag">Le patron</span>
+    <p class="section-label">L'espace « Modèles »</p>
+    <p class="section-note">Les 5 tableaux de référence — le modèle sur lequel chaque espace client est bâti. On n'y touche jamais.</p>
+    <div class="chips">
+      <span class="chip ghost">Formation</span>
+      <span class="chip ghost">Rédaction et réécriture</span>
+      <span class="chip ghost">Analyse de clarté</span>
+      <span class="chip ghost">Test d'utilisabilité</span>
+      <span class="chip ghost">Tableau de bord</span>
+    </div>
+  </section>
+
+  <div class="zoom"><span class="ln"></span> les espaces clients <span class="ln"></span></div>
+
+  <!-- CLIENT WORKSPACE CONCEPT -->
+  <section class="frame">
+    <span class="frame-tag">Le principe</span>
+    <p class="section-label">Chaque client a son propre workspace</p>
+    <p class="section-note">Un espace isolé par client : les données d'un client ne se mélangent jamais avec celles d'un autre.</p>
+    <div class="stack-wrap">
+      <div class="stack">
+        <div class="ghost g2"></div>
+        <div class="ghost g1"></div>
+        <div class="front">
+          <p class="lab">Workspace client</p>
+          <h3>Un espace par client</h3>
+          <p>Client A, Client B, Client C… <span class="hl">chacun le sien</span>, monté à l'identique.</p>
+        </div>
+      </div>
+    </div>
+    <p class="stack-foot">Tous bâtis sur le même modèle, mais complètement séparés.</p>
+  </section>
+
+  <div class="zoom"><span class="ln"></span> à l'intérieur d'un workspace client <span class="ln"></span></div>
+
+  <!-- INSIDE A CLIENT WORKSPACE -->
+  <section class="frame">
+    <span class="frame-tag">Dans un workspace client</span>
+    <p class="section-label">Un tableau de bord + les projets</p>
+    <p class="section-note">La vue d'ensemble en haut, les tableaux de travail en dessous.</p>
+
+    <div class="chips">
+      <span class="chip dash"><span class="ico">▦</span> Tableau de bord</span>
+    </div>
+    <p class="section-note" style="margin:8px 0 0;">Relié aux 4 tableaux projets — il agrège tout pour voir où chaque projet est rendu.</p>
+
+    <div class="chips" style="margin-top:16px;">
+      <span class="chip">Formation</span>
+      <span class="chip">Rédaction et réécriture</span>
+      <span class="chip">Analyse de clarté</span>
+      <span class="chip">Test d'utilisabilité</span>
+    </div>
+    <p class="section-note" style="margin:8px 0 0;">Les 4 types de projets que l'équipe peut mener pour ce client.</p>
+  </section>
+
+  <div class="zoom"><span class="ln"></span> à l'intérieur d'un tableau projet <span class="ln"></span></div>
+
+  <!-- PROJECT ANATOMY -->
+  <section class="frame">
+    <span class="frame-tag">L'anatomie d'un projet</span>
+    <p class="section-label">Comment un projet est construit</p>
+    <p class="section-note">Deux niveaux : l'étape, puis les périodes de travail qui s'y rattachent.</p>
+
+    <div class="anatomy">
+      <div class="arow">
+        <span class="marker">▾</span>
+        <span class="ttl">Démarrage</span>
+        <span class="meaning">une ligne = un élément = <b>une étape</b></span>
+      </div>
+
+      <div class="subs">
+        <p class="scap">Les sous-éléments = les périodes de travail</p>
+        <div class="srow">
+          <span class="who"><span class="av">JM</span> Session 1</span>
+          <span class="chrono"><span class="dot"></span> 0 m 19 s</span>
+          <span class="hrs">124 min</span>
+        </div>
+        <div class="srow">
+          <span class="who"><span class="av">JM</span> Session 2</span>
+          <span class="chrono"><span class="dot"></span> 0 m 48 s</span>
+          <span class="hrs">135 min</span>
+        </div>
+        <div class="srow">
+          <span class="who"><span class="av">JM</span> Session 3</span>
+          <span class="chrono"><span class="dot"></span> en cours</span>
+          <span class="hrs">— min</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-note" style="margin-top:18px;">Chaque session porte ses vraies heures (avec le chrono). Les totaux remontent à l'étape, puis au tableau de bord.</p>
+  </section>
+
+  <div class="zoom"><span class="ln"></span> ce qui relie le tout <span class="ln"></span></div>
+
+  <!-- MAKE -->
+  <section class="frame make">
+    <span class="frame-tag green"><span class="hex"></span> Les intégrations · Make</span>
+    <p class="section-label">Le moteur qui assemble la structure</p>
+    <p class="section-note">Make est branché au compte Monday. C'est la pièce invisible qui bâtit chaque espace client et le garde cohérent — sans manipulation.</p>
+
+    <div class="pipe">
+      <span class="nodebox">Monday</span>
+      <span class="ar">→</span>
+      <span class="nodebox mid">Make</span>
+      <span class="ar">→</span>
+      <span class="nodebox">Monday</span>
+    </div>
+
+    <ul class="doing">
+      <li><b>Monte l'espace</b> du client, au nom de l'entreprise</li>
+      <li><b>Reproduit les 5 tableaux</b> à partir de « Modèles »</li>
+      <li><b>Relie le tableau de bord</b> aux 4 tableaux projets du même espace</li>
+      <li><b>Donne les accès</b> aux bonnes personnes</li>
+    </ul>
+
+    <p class="section-note">Résultat : chaque espace client est identique, complet et isolé, sans qu'on ait à le monter à la main.</p>
+  </section>
+
+  <footer class="foot">
+    <span class="mark">Autrement Dit</span>
+    <span>Architecture de la solution · un workspace par client</span>
+  </footer>
+
+</main>
+</body>
+</html>
