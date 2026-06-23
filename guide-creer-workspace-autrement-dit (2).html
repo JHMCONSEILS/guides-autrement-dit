@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lancer un nouveau client — Autrement Dit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCFBF8;
+    --ink:#1B2430;
+    --slate:#5C6470;
+    --coral:#E2553C;
+    --coral-soft:#FBE7E0;
+    --highlight:#FBE6A0;
+    --line:#E8E3D8;
+    --green:#2E8A66;
+    --green-soft:#E6F1EB;
+    --green-line:#CDE6D9;
+    --card:#FFFFFF;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    line-height:1.6;
+    font-size:16px;
+  }
+
+  .sheet{max-width:760px;margin:0 auto;padding:64px 40px 80px;}
+
+  /* ---------- Header ---------- */
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--coral);margin:0 0 18px;
+  }
+  h1{
+    font-family:"Fraunces",Georgia,"Times New Roman",serif;
+    font-weight:500;font-size:clamp(30px,5.5vw,46px);
+    line-height:1.08;letter-spacing:-.01em;margin:0 0 16px;
+  }
+  .lede{font-size:18px;color:var(--slate);margin:0;max-width:54ch;}
+
+  .rule{height:1px;background:var(--line);border:0;margin:40px 0;}
+
+  /* ---------- Big idea strip ---------- */
+  .bigidea{
+    display:flex;align-items:center;gap:20px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:16px;padding:24px 26px;margin:0;
+  }
+  .bigidea .one{
+    font-family:"Fraunces",Georgia,serif;
+    font-size:46px;line-height:1;color:var(--coral);font-weight:500;
+    flex-shrink:0;
+  }
+  .bigidea p{margin:0;font-size:15.5px;color:var(--ink);}
+  .bigidea strong{font-weight:600;}
+
+  /* ---------- Section heads ---------- */
+  .sec-head{
+    font-family:"Fraunces",Georgia,serif;font-weight:500;
+    font-size:24px;margin:48px 0 4px;display:flex;align-items:center;gap:12px;
+  }
+  .sec-head .dot{
+    width:11px;height:11px;border-radius:50%;flex-shrink:0;
+  }
+  .sec-head .dot.coral{background:var(--coral);}
+  .sec-head .dot.green{background:var(--green);}
+  .sec-sub{font-size:14.5px;color:var(--slate);margin:0 0 26px;padding-left:23px;}
+
+  /* ---------- Manual steps (coral) ---------- */
+  .step{
+    display:grid;grid-template-columns:auto 1fr;gap:22px;
+    padding:24px 0;border-top:1px solid var(--line);
+  }
+  .step:first-of-type{border-top:1px solid var(--ink);}
+  .num{
+    font-family:"Fraunces",Georgia,serif;font-size:34px;font-weight:500;
+    line-height:1;color:var(--coral);width:46px;
+  }
+  .step-body h3{font-size:17px;font-weight:600;margin:2px 0 8px;}
+  .step-body p{margin:0 0 12px;color:var(--slate);font-size:14.5px;}
+  .step-body p:last-child{margin-bottom:0;}
+
+  .path{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 6px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 11px;
+    font-size:13.5px;font-weight:500;color:var(--ink);white-space:nowrap;
+  }
+  .btn.board{background:#FFF6EE;border-color:#F0DCC9;}
+  .arrow{color:#B7B2A6;font-size:15px;line-height:1;}
+  .pill-name{
+    background:linear-gradient(transparent 58%,var(--highlight) 58%);
+    padding:1px 3px;font-weight:600;
+  }
+
+  /* ---------- Automatic timeline (green) ---------- */
+  .timeline{
+    list-style:none;margin:0;padding:0 0 0 4px;position:relative;
+  }
+  .timeline::before{
+    content:"";position:absolute;left:9px;top:6px;bottom:34px;
+    width:2px;background:var(--green-line);
+  }
+  .timeline li{
+    position:relative;padding:0 0 22px 38px;
+  }
+  .timeline li:last-child{padding-bottom:0;}
+  .timeline li::before{
+    content:"";position:absolute;left:2px;top:3px;
+    width:16px;height:16px;border-radius:50%;
+    background:#fff;border:3px solid var(--green);
+  }
+  .timeline li.flag::before{
+    background:var(--green);
+    content:"✓";color:#fff;font-size:10px;line-height:11px;text-align:center;
+  }
+  .timeline h4{margin:0 0 3px;font-size:15.5px;font-weight:600;}
+  .timeline p{margin:0;font-size:14px;color:var(--slate);}
+  .timeline .ready h4{color:var(--green);}
+
+  /* ---------- Callouts ---------- */
+  .callout{
+    border-left:3px solid var(--coral);background:#fff;
+    border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0 0;font-size:14px;
+  }
+  .callout.tip{border-left-color:var(--green);}
+  .callout .label{
+    display:block;font-weight:600;color:var(--ink);
+    margin-bottom:4px;font-size:13px;letter-spacing:.02em;
+  }
+  .callout p{margin:0;color:var(--slate);}
+
+  /* ---------- Next strip ---------- */
+  .next{
+    margin:44px 0 0;background:var(--coral-soft);border:1px solid #F4D6CC;
+    border-radius:16px;padding:22px 24px;
+  }
+  .next .label{
+    font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--coral);margin:0 0 6px;
+  }
+  .next p{margin:0;font-size:15px;color:var(--ink);}
+
+  /* ---------- Footer ---------- */
+  .foot{
+    margin-top:52px;padding-top:24px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:baseline;
+    flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--slate);
+  }
+  .foot .mark{font-family:"Fraunces",Georgia,serif;font-size:15px;color:var(--ink);font-weight:500;}
+
+  /* ---------- Motion ---------- */
+  @media (prefers-reduced-motion: no-preference){
+    .sheet > *{animation:rise .5s ease both;}
+    .sheet > *:nth-child(2){animation-delay:.04s;}
+    .sheet > *:nth-child(3){animation-delay:.08s;}
+    @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  }
+
+  a{color:var(--coral);}
+  :focus-visible{outline:2px solid var(--coral);outline-offset:2px;border-radius:3px;}
+
+  @media (max-width:620px){
+    .sheet{padding:40px 22px 60px;}
+    .step{gap:14px;}
+    .num{font-size:28px;width:34px;}
+    .bigidea{flex-direction:column;align-items:flex-start;gap:12px;}
+  }
+
+  @media print{
+    body{background:#fff;}
+    .sheet{max-width:none;padding:0 8mm;}
+    .sheet > *{animation:none !important;}
+    .step,.timeline li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <p class="eyebrow">Autrement Dit · Aide-mémoire</p>
+    <h1>Lancer un nouveau client</h1>
+    <p class="lede">Tu fais un seul geste. Tout le reste — le workspace, les tableaux, les liens, les accès — se monte tout seul en quelques minutes.</p>
+  </header>
+
+  <hr class="rule">
+
+  <div class="bigidea">
+    <span class="one">1</span>
+    <p><strong>Le déclencheur, c'est de placer le client dans le bon tableau.</strong> Dès qu'un client arrive dans « Nouveaux Projets », la machine se met en route. Tu n'as aucun bouton magique à chercher.</p>
+  </div>
+
+  <p class="sec-head"><span class="dot coral"></span>Ce que tu fais</p>
+  <p class="sec-sub">Deux façons, au choix. L'une ou l'autre suffit.</p>
+
+  <div class="step">
+    <div class="num">1</div>
+    <div class="step-body">
+      <h3>Amener le client dans « Nouveaux Projets »</h3>
+      <p>Le plus courant : depuis le tableau <strong>Démarchage</strong>, déplace la ligne du client vers le tableau <strong>Nouveaux Projets</strong>.</p>
+      <div class="path">
+        <span class="btn board">Démarchage</span>
+        <span class="arrow">→</span>
+        <span class="btn board">Nouveaux Projets</span>
+      </div>
+      <p>Sinon, tu peux aussi créer directement une nouvelle ligne dans « Nouveaux Projets ».</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="step-body">
+      <h3>Vérifier le nom de l'entreprise</h3>
+      <p>Assure-toi que la colonne <span class="pill-name">Entreprise</span> contient bien le nom du client. <strong>C'est ce nom qui devient le nom du workspace</strong> — s'il est vide, le workspace n'aura pas de nom.</p>
+      <div class="callout tip">
+        <span class="label">C'est tout</span>
+        <p>Tu n'as aucun statut à changer ni aucune case à cocher. Le simple fait que le client soit dans « Nouveaux Projets » lance le processus.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-head"><span class="dot green"></span>Ce qui se passe tout seul</p>
+  <p class="sec-sub">En coulisses, en 2 à 3 minutes, sans que tu touches à rien.</p>
+
+  <ol class="timeline">
+    <li>
+      <h4>Le client est repéré</h4>
+      <p>Le système voit le nouveau client arriver dans « Nouveaux Projets ».</p>
+    </li>
+    <li>
+      <h4>Le workspace est créé</h4>
+      <p>Un espace de travail est ouvert, au nom de l'entreprise.</p>
+    </li>
+    <li>
+      <h4>Les 5 tableaux sont montés</h4>
+      <p>Formation, Rédaction et réécriture, Analyse de clarté, Test d'utilisabilité et le Tableau de bord — copiés avec toute leur structure.</p>
+    </li>
+    <li>
+      <h4>Les tableaux sont reliés entre eux</h4>
+      <p>Le tableau de bord est connecté aux 4 tableaux de ce workspace précis — jamais aux Modèles.</p>
+    </li>
+    <li>
+      <h4>Les accès sont donnés</h4>
+      <p>Amélie et Chantale sont invitées automatiquement, à chaque fois.</p>
+    </li>
+    <li class="flag ready">
+      <h4>Workspace prêt</h4>
+      <p>En général en 2 à 3 minutes. Tu le retrouves dans la liste des workspaces, à gauche dans Monday.</p>
+    </li>
+  </ol>
+
+  <div class="callout">
+    <span class="label">Si rien n'apparaît après quelques minutes</span>
+    <p>Vérifie trois choses : la ligne est bien <strong>dans</strong> « Nouveaux Projets », la colonne Entreprise est <strong>remplie</strong>, et tu as laissé passer 2-3 minutes. Si c'est bon et que rien ne vient, préviens la personne qui gère l'automatisation.</p>
+  </div>
+
+  <footer class="foot">
+    <span class="mark">Autrement Dit</span>
+    <span>Aide-mémoire interne · lancer un client en un geste</span>
+  </footer>
+
+</main>
+</body>
+</html>
